@@ -1,0 +1,64 @@
+---
+title: "Data Visualisation"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(plotly)
+```
+
+Graph 1
+=========================================================================
+
+
+```{r}
+data("sunspot.year")
+year=c(1700:1988)
+data=cbind(year,as.numeric(sunspot.year))
+colnames(data)=c("year","sunspot.year")
+data=as.data.frame(data)
+plot_ly(data, x = ~year, y = ~sunspot.year,mode = 'lines')
+```
+
+
+Graph 2
+=================================================================================
+
+```{r}
+data(iris)
+p=plot_ly(iris, x = ~Sepal.Width, y = ~Sepal.Length) 
+add_markers(p, color = ~Petal.Length, size = ~Petal.Length)
+add_markers(p, color = ~Species)
+add_markers(p, color = ~Species, colors = "Set1")
+```
+
+
+Graph 3
+=========================================================================
+
+```{r}
+x <- c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
+y1 <- c(20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17)
+y2 <- c(19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16)
+data <- data.frame(x, y1, y2)
+
+#The default order will be alphabetized unless specified as below:
+data$x <- factor(data$x, levels = data[["x"]])
+
+p <- plot_ly(data, x = ~x, y = ~y1, type = 'bar', name = 'Primary Product', marker = list(color = 'rgb(49,130,189)')) %>%
+  add_trace(y = ~y2, name = 'Secondary Product', marker = list(color = 'rgb(204,204,204)')) %>%
+  layout(xaxis = list(title = "", tickangle = -45),
+         yaxis = list(title = ""),
+         margin = list(b = 100),
+         barmode = 'group')
+
+# Create a shareable link to your chart
+# Set up API credentials: https://plot.ly/r/getting-started
+p
+
+```
+
